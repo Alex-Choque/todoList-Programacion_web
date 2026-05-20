@@ -1,0 +1,25 @@
+{
+  "name": "todolist-programacion_web",
+  "version": "1.0.0",
+  "description": "Proyecto de todoList para programacion web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-Choque/todoList-Programacion_web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex-Choque/todoList-Programacion_web/issues"
+  },
+  "homepage": "https://github.com/Alex-Choque/todoList-Programacion_web#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.6.2"
+  }
+}
