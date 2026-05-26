@@ -12,6 +12,11 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.use(express.json());
 
+app.use((req, res, next) => {  // primero el middleware
+  res.set('Cache-Control', 'no-cache');
+  next();
+});
+
 app.use('/tasks', taskRoutes);
 
 app.get('/', (req, res) => {
