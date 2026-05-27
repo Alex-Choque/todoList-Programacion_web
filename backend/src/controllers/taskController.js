@@ -20,7 +20,7 @@ const getTasks = async (req, res) => {
     res.set('X-Resource', 'tasks');
     res.set('Last-Modified', lastModified.toUTCString());
     res.set('ETag', etag);
-    res.set('Cache-Control', 'public, max-age=60');
+    res.set('Cache-Control', 'no-cache');
 
     res.json(tasks);
   } catch (error) {
@@ -45,7 +45,7 @@ const getTaskById = async (req, res) => {
     res.set('ETag', etag);
     res.set('X-Task-ID', task._id.toString());
     res.set('X-Completed', task.completed.toString());
-    res.set('Cache-Control', 'private, max-age=120');
+    res.set('Cache-Control', 'no-cache');
 
     res.json(task);
   } catch (error) {
