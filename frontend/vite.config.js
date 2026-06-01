@@ -6,7 +6,8 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/tasks': 'http://localhost:5000'
+      '/tasks': 'http://localhost:5000',
+      '/auth': 'http://localhost:5000',
     }
   }
 })
