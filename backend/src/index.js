@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const taskRoutes = require('./routes/taskRoutes');
 const fileRoutes = require('./routes/fileRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = 5000;
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 
 app.use('/tasks', taskRoutes);
 app.use('/files', fileRoutes);
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'Server running' });
