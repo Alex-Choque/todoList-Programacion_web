@@ -84,4 +84,25 @@ const logout = (req, res) => {
   res.json({ message: 'Logout exitoso' });
 };
 
-module.exports = { register, login, logout };
+const profile = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener perfil' });
+  }
+};
+
+module.exports = { register, login, logout, profile };
