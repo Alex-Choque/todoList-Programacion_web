@@ -4,7 +4,7 @@ const generateETag = (task) => `"${task._id}-${task.updatedAt.getTime()}"`;
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ user: req.userId });
     const lastModified = tasks.reduce(
       (max, t) => (t.updatedAt > max ? t.updatedAt : max),
       new Date(0)
@@ -30,7 +30,7 @@ const getTasks = async (req, res) => {
 
 const getTaskById = async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id);
+    const task = await Task.findOne({ _id: req.params.id, user: req.userId });
 
     if (!task) {
       return res.status(404).json({ error: 'Tarea no encontrada' });
@@ -55,7 +55,10 @@ const getTaskById = async (req, res) => {
 
 const createTask = async (req, res) => {
   try {
-    const newTask = new Task(req.body);
+    const newTask = new Task({
+      ...req.body,
+      user: req.userId
+    });
     const result = await newTask.save();
     
     res.set('X-Task-ID', result._id.toString());
@@ -70,8 +73,8 @@ const createTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   try {
-    const updatedTask = await Task.findByIdAndUpdate(
-      req.params.id,
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: req.params.id, user: req.userId },
       req.body,
       { new: true }
     );
@@ -93,7 +96,7 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+    const deletedTask = await Task.findOneAndDelete({ _id: req.params.id, user: req.userId });
 
     if (!deletedTask) {
       return res.status(404).json({ error: 'Tarea no encontrada' });
