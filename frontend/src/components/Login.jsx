@@ -10,6 +10,27 @@ function Login({ onLogin }) {
 
   const handleSubmit = async () => {
     setError('')
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('El email no es válido')
+      return
+    }
+
+    if (!isLogin) {
+      if (password.length < 8) {
+        setError('La contraseña debe tener al menos 8 caracteres')
+        return
+      }
+      if (!/[A-Z]/.test(password)) {
+        setError('La contraseña debe tener al menos una mayúscula')
+        return
+      }
+      if (!/[0-9]/.test(password)) {
+        setError('La contraseña debe tener al menos un número')
+        return
+      }
+    }
+
     const url = isLogin ? '/auth/login' : '/auth/register'
     const body = isLogin ? { email, password } : { username, email, password }
 

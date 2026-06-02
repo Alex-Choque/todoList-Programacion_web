@@ -44,6 +44,7 @@ function App() {
   }
 
   const deleteTask = async (id) => {
+    if (!window.confirm('¿Quieres eliminar esta tarea?')) return
     await fetch(`/tasks/${id}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
@@ -71,6 +72,7 @@ function App() {
   }
 
   const logout = () => {
+    if (!window.confirm('¿Quieres cerrar sesión?')) return
     localStorage.removeItem('token')
     setToken(null)
     setTasks([])

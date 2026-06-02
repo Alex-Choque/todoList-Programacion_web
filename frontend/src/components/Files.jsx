@@ -38,6 +38,7 @@ function Files({ token, onNavigate, onLogout }) {
   }
 
   const deleteFile = async (filename) => {
+    if (!window.confirm('¿Quieres eliminar este archivo?')) return
     await fetch(`/files/${filename}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
