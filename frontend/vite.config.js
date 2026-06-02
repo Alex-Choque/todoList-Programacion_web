@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/tasks': 'http://localhost:5000',
       '/auth': 'http://localhost:5000',
+      '/files': 'http://localhost:5000'
     }
   }
 })

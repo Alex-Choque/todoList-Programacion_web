@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import Login from './components/Login'
 import TaskForm from './components/taskForm'
 import TaskList from './components/taskList'
+import Files from './components/Files'
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tasks, setTasks] = useState([])
+  const [vista, setVista] = useState('tasks')
 
   const getTasks = async () => {
     const res = await fetch('/tasks', {
@@ -72,6 +74,7 @@ function App() {
     localStorage.removeItem('token')
     setToken(null)
     setTasks([])
+    setVista('tasks')
   }
 
   useEffect(() => {
@@ -83,26 +86,46 @@ function App() {
   const pending = tasks.filter(t => !t.completed)
   const completed = tasks.filter(t => t.completed)
 
+  if (vista === 'files') {
+    return <Files token={token} onNavigate={setVista} onLogout={logout} />
+  }
+
   return (
     <div style={{ maxWidth: '500px', margin: '20px auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h1 style={{ fontSize: '24px' }}>
           Todo List
         </h1>
-        <button
-          onClick={logout}
-          style={{
-            padding: '6px 14px',
-            background: 'transparent',
-            border: '1px solid #e8e8e8',
-            borderRadius: '8px',
-            fontSize: '13px',
-            cursor: 'pointer',
-            color: '#555'
-          }}
-        >
-          Cerrar sesión
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            onClick={() => setVista('files')}
+            style={{
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid #e8e8e8',
+              borderRadius: '8px',
+              fontSize: '13px',
+              cursor: 'pointer',
+              color: '#555'
+            }}
+          >
+            Archivos
+          </button>
+          <button
+            onClick={logout}
+            style={{
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid #e8e8e8',
+              borderRadius: '8px',
+              fontSize: '13px',
+              cursor: 'pointer',
+              color: '#555'
+            }}
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </div>
       <TaskForm onAdd={createTask} />
       <TaskList
