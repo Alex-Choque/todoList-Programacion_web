@@ -5,10 +5,23 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
+    https: {
+      key: './key.pem',
+      cert: './cert.pem'
+    },
     proxy: {
-      '/tasks': 'http://localhost:5000',
-      '/auth': 'http://localhost:5000',
-      '/files': 'http://localhost:5000'
+      '/tasks': {
+        target: 'https://localhost:5000',
+        secure: false
+      },
+      '/auth': {
+        target: 'https://localhost:5000',
+        secure: false
+      },
+      '/files': {
+        target: 'https://localhost:5000',
+        secure: false
+      }
     }
   }
 })
