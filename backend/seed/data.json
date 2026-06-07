@@ -1,0 +1,76 @@
+{
+  "users": [
+    {
+      "username": "Alex",
+      "email": "alex@gmail.com",
+      "password": "WEB1234"
+    },
+    {
+      "username": "Maria",
+      "email": "maria@gmail.com",
+      "password": "WEB1234"
+    },
+    {
+      "username": "Carlos",
+      "email": "carlos@gmail.com",
+      "password": "WEB1234"
+    }
+  ],
+  "tasks": [
+    {
+      "title": "Comprar leche",
+      "completed": false,
+      "userEmail": "alex@gmail.com"
+    },
+    {
+      "title": "Hacer ejercicio",
+      "completed": true,
+      "userEmail": "alex@gmail.com"
+    },
+    {
+      "title": "Leer un libro",
+      "completed": false,
+      "userEmail": "alex@gmail.com"
+    },
+    {
+      "title": "Pagar facturas",
+      "completed": false,
+      "userEmail": "alex@gmail.com"
+    },
+    {
+      "title": "Estudiar",
+      "completed": true,
+      "userEmail": "maria@gmail.com"
+    },
+    {
+      "title": "Bañar al perro",
+      "completed": false,
+      "userEmail": "maria@gmail.com"
+    },
+    {
+      "title": "Ir al mercado",
+      "completed": true,
+      "userEmail": "maria@gmail.com"
+    },
+    {
+      "title": "Llamar al médico",
+      "completed": false,
+      "userEmail": "maria@gmail.com"
+    },
+    {
+      "title": "Terminar informe",
+      "completed": false,
+      "userEmail": "carlos@gmail.com"
+    },
+    {
+      "title": "Revisar correos",
+      "completed": true,
+      "userEmail": "carlos@gmail.com"
+    },
+    {
+      "title": "Hacer las compras",
+      "completed": false,
+      "userEmail": "carlos@gmail.com"
+    }
+  ]
+}

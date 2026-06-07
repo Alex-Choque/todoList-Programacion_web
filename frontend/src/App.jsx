@@ -8,12 +8,17 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'))
   const [tasks, setTasks] = useState([])
   const [vista, setVista] = useState('tasks')
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const limit = 5
 
-  const getTasks = async () => {
-    const res = await fetch('/tasks', {
+  const getTasks = async (currentPage = page) => {
+    const res = await fetch(`/tasks?page=${currentPage}&limit=${limit}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     const data = await res.json()
+    const pages = res.headers.get('X-Total-Pages')
+    setTotalPages(parseInt(pages) || 1)
     return data
   }
 
@@ -49,7 +54,9 @@ function App() {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` }
     })
-    const data = await getTasks()
+    const newPage = tasks.length === 1 && page > 1 ? page - 1 : page
+    setPage(newPage)
+    const data = await getTasks(newPage)
     setTasks(data)
   }
 
@@ -77,6 +84,13 @@ function App() {
     setToken(null)
     setTasks([])
     setVista('tasks')
+    setPage(1)
+  }
+
+  const handlePageChange = async (newPage) => {
+    setPage(newPage)
+    const data = await getTasks(newPage)
+    setTasks(data)
   }
 
   useEffect(() => {
@@ -95,9 +109,7 @@ function App() {
   return (
     <div style={{ maxWidth: '500px', margin: '20px auto', padding: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h1 style={{ fontSize: '24px' }}>
-          Todo List
-        </h1>
+        <h1 style={{ fontSize: '24px' }}>Todo List</h1>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
             onClick={() => setVista('files')}
@@ -129,6 +141,7 @@ function App() {
           </button>
         </div>
       </div>
+
       <TaskForm onAdd={createTask} />
       <TaskList
         title="Pendientes"
@@ -144,6 +157,44 @@ function App() {
         onToggle={toggleTask}
         showActions={false}
       />
+
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
+          <button
+            onClick={() => handlePageChange(page - 1)}
+            disabled={page === 1}
+            style={{
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid #e8e8e8',
+              borderRadius: '8px',
+              fontSize: '13px',
+              cursor: page === 1 ? 'not-allowed' : 'pointer',
+              color: page === 1 ? '#ccc' : '#555'
+            }}
+          >
+            Anterior
+          </button>
+          <span style={{ fontSize: '13px', color: '#888' }}>
+            {page} / {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === totalPages}
+            style={{
+              padding: '6px 14px',
+              background: 'transparent',
+              border: '1px solid #e8e8e8',
+              borderRadius: '8px',
+              fontSize: '13px',
+              cursor: page === totalPages ? 'not-allowed' : 'pointer',
+              color: page === totalPages ? '#ccc' : '#555'
+            }}
+          >
+            Siguiente
+          </button>
+        </div>
+      )}
     </div>
   )
 }

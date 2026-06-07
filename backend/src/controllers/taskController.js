@@ -4,19 +4,31 @@ const generateETag = (task) => `"${task._id}-${task.updatedAt.getTime()}"`;
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.userId });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const total = await Task.countDocuments({ user: req.userId });
+    const tasks = await Task.find({ user: req.userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
     const lastModified = tasks.reduce(
       (max, t) => (t.updatedAt > max ? t.updatedAt : max),
       new Date(0)
     );
 
-    const etag = `"${tasks.length}-${lastModified.getTime()}"`;
+    const etag = `"${total}-${page}-${lastModified.getTime()}"`;
 
     if (req.headers['if-none-match'] === etag) {
       return res.status(304).end();
     }
 
-    res.set('X-Total-Count', tasks.length);
+    res.set('X-Total-Count', total);
+    res.set('X-Page', page);
+    res.set('X-Limit', limit);
+    res.set('X-Total-Pages', Math.ceil(total / limit));
     res.set('X-Resource', 'tasks');
     res.set('Last-Modified', lastModified.toUTCString());
     res.set('ETag', etag);
